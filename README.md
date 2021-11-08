@@ -16,12 +16,14 @@ from bold_smart_lock.bold_smart_lock import BoldSmartLock
 async def main():
     async with aiohttp.ClientSession() as session:
         bold = BoldSmartLock(session)
+
         # Request a validation code for the account e-mail address
-        verify_email_response = await bold.verify_email("john.doe@email.com);
+        verify_email_response = await bold.verify_email("john.doe@email.com");
         print(verify_email_response)
 
         # Authenticate with email, password, validation code (from email) and validation id (from output)
         authenticate_response = await bold.authenticate("john.doe@email.com", "password", "01234", "00000000-0000-0000-0000-000000000000");
+        print(authenticate_response)
 
         # E.g. for testing purpose you can set a token and expiration date manually
         token = "00000000-0000-0000-0000-000000000000"

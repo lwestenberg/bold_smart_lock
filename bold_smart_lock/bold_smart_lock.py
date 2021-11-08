@@ -1,3 +1,5 @@
+"""Bold Smart Lock API wrapper"""
+
 import aiohttp
 from datetime import datetime
 
@@ -7,49 +9,59 @@ from .const import (
     EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT,
 )
 
-HEADERS = {'Content-Type' : 'application/json'}
-
 from .auth import Auth
+
 
 class BoldSmartLock:
     """A Python Abstraction object to Bold Smart Lock"""
 
-
     def __init__(self, session: aiohttp.ClientSession):
         """Initialize the Bold Smart Lock object."""
+
         self._session = session
         self._auth = Auth(session)
 
-
     async def verify_email(self, email: str):
+        """Request a validation code by e-mail and get a validation_id"""
+
         return await self._auth.request_validation_id(email)
 
+    async def authenticate(
+        self,
+        email: str,
+        password: str,
+        verification_code: str,
+        validation_id: str = None,
+    ):
+        """Authenticate with account data, validation id and validation code"""
 
-    async def authenticate(self, email: str, password: str, verification_code: str, validation_id: str = None):
-        return await self._auth.authenticate(email, password, verification_code, validation_id)
-
+        return await self._auth.authenticate(
+            email, password, verification_code, validation_id
+        )
 
     def set_token_data(self, token: str, token_expiration_time: datetime):
+        """Set the token and token expiration time"""
+
         self._auth.set_token_data(token, token_expiration_time)
 
-
     async def get_device_permissions(self):
+        """Get the device data and permissions"""
+
         headers = await self._auth.headers(True)
 
         async with self._session.get(
-            API_URI + EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT + "?size=1000",
-            headers=headers
+            API_URI + EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT, headers=headers
         ) as response:
             response_text = await response.text()
             return response_text
 
-
     async def remote_activation(self, device_id: int):
+        """Activate the device remotely"""
+
         headers = await self._auth.headers(True)
 
         async with self._session.post(
-            API_URI + REMOTE_ACTIVATION_ENDPOINT.format(device_id),
-            headers=headers
+            API_URI + REMOTE_ACTIVATION_ENDPOINT.format(device_id), headers=headers
         ) as response:
             response_text = await response.text()
             return response_text
