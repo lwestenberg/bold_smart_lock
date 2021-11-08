@@ -39,10 +39,10 @@ class BoldSmartLock:
             email, password, verification_code, validation_id
         )
 
-    def set_token_data(self, token: str, token_expiration_time: datetime):
-        """Set the token and token expiration time"""
+    def set_token(self, token: str):
+        """Set the token"""
 
-        self._auth.set_token_data(token, token_expiration_time)
+        self._auth.set_token(token)
 
     async def get_device_permissions(self):
         """Get the device data and permissions"""
@@ -65,3 +65,8 @@ class BoldSmartLock:
         ) as response:
             response_text = await response.text()
             return response_text
+
+    async def re_login(self):
+        """Re-login / refresh token"""
+
+        return await self._auth.re_login()

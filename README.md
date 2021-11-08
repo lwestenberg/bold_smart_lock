@@ -25,10 +25,9 @@ async def main():
         authenticate_response = await bold.authenticate("john.doe@email.com", "password", "01234", "00000000-0000-0000-0000-000000000000");
         print(authenticate_response)
 
-        # E.g. for testing purpose you can set a token and expiration date manually
+        # E.g. for testing purpose you can set a token
         token = "00000000-0000-0000-0000-000000000000"
-        token_expiration_time = "2022-01-01T00:00:00.000000Z"
-        bold.set_token_data(token, datetime.fromisoformat(token_expiration_time[:-1]))
+        bold.set_token(token)
 
         # Get the devices and device permissions
         get_device_permissions_response = await bold.get_device_permissions()
@@ -37,6 +36,10 @@ async def main():
         # Active the smart lock by device id
         remote_activation_response = await bold.remote_activation(12345)
         print(remote_activation_response)
+
+        # Re-login / update token
+        relogin_response = await bold.re_login()
+        print(relogin_response)
 
 asyncio.run(main())
 ```
