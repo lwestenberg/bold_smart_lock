@@ -23,10 +23,8 @@ setup(
     license='MIT',
     include_package_data=True,
     install_requires=[
-        "requests>=2.0.0",
-        "requests-oauthlib>=1.3.0,<2",
-        "oauthlib>=3.0.0,<4",
-        'pytz'
+        "aiohttp",
+        "datetime",
     ],
     test_suite='tests',
     keywords=[
