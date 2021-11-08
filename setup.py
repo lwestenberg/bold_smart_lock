@@ -24,7 +24,6 @@ setup(
     include_package_data=True,
     install_requires=[
         "aiohttp",
-        "datetime",
     ],
     test_suite="tests",
     keywords=[

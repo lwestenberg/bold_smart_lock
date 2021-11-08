@@ -9,7 +9,6 @@ This package implements the Bold Smart Lock API to authenticate and unlock a Bol
 ```python
 import asyncio
 import aiohttp
-from datetime import datetime
 
 from bold_smart_lock.bold_smart_lock import BoldSmartLock
 

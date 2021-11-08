@@ -1,7 +1,6 @@
 """Bold Smart Lock authentication."""
 
 import aiohttp
-from datetime import datetime
 
 from .const import (
     API_URI,
