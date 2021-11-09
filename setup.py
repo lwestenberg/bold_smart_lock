@@ -24,6 +24,9 @@ setup(
     include_package_data=True,
     install_requires=[
         "aiohttp",
+        "asyncio",
+        "pytest",
+        "pytest-asyncio",
     ],
     test_suite="tests",
     keywords=[

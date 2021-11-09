@@ -1,0 +1,69 @@
+[
+    {
+        "id": 11111,
+        "serial": "0000011111",
+        "deviceId": 11111,
+        "owner": {
+            "organizationId": 1,
+            "accountId": 1,
+            "name": "John Doe",
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "name": "Front Door",
+        "organizationId": 1,
+        "model": {
+            "id": 3,
+            "make": "Bold",
+            "model": "Smart Cylinder Long Range",
+            "name": "Smart Cylinder Long Range",
+            "isCertified": true,
+            "deviceType": {
+                "id": 1,
+                "name": "Lock",
+                "description": "Lock"
+            }
+        },
+        "type": {
+            "id": 1,
+            "name": "Lock",
+            "description": "Lock"
+        },
+        "actualFirmwareVersion": 92,
+        "requiredFirmwareVersion": 92,
+        "dateCreated": "2021-1-01T00:00:00.000Z",
+        "dateModified": "2021-1-01T00:00:00.000Z",
+        "timeZone": "Europe/Amsterdam",
+        "batteryLevel": "Excellent",
+        "settingsAcknowledged": true,
+        "permissions": [
+            {
+                "devicePermission": "UseDevice",
+                "schedule": []
+            }
+        ],
+        "permissionAdministrate": false,
+        "permissionRemoteActivate": false,
+        "permissionAssignKeyfob": false,
+        "permissionHash": "",
+        "gateway": {
+			"gatewayId": 11111,
+			"gatewayRssi": -70,
+			"gatewayLastSeen": "2021-01-01T00:00:00Z",
+			"gatewayName": "Gateway"
+		},
+		"settings": {
+			"activationTime": 30,
+			"soundVolume": 10,
+			"pressButtonActivation": true,
+			"controllerFunctionality": false,
+			"acknowledged": true
+		},
+		"featureSet": {
+			"isActivatable": true,
+			"storeDeviceEvents": true
+		},
+		"synced": true,
+		"secure": true
+    }
+]

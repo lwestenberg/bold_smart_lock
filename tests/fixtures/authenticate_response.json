@@ -1,0 +1,47 @@
+{
+    "token": "00000000-0000-0000-0000-001234567890",
+    "accountId": 1,
+    "expirationTime": "2022-01-01T00:00:00.000000Z",
+    "firstName": "John",
+    "lastName": "Doe",
+    "phoneNumber": "+31123456789",
+    "account": {
+        "id": 1,
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@email.com",
+        "phone": "+31123456789",
+        "emailIsVerified": false,
+        "language": "en",
+        "isSystemAccount": false,
+        "isSupportAccount": false,
+        "isSystemIntegration": false,
+        "dateCreated": "2021-01-01T00:00:00.000Z",
+        "dateModified": "2021-01-01T00:00:00.000Z",
+        "datePreliminary": "2021-01-01T00:00:00.000Z",
+        "users": [
+            {
+                "id": 1,
+                "organization": {
+                    "id": 1,
+                    "name": "Personal organization of John Doe",
+                    "subscription": "FREE",
+                    "dateCreated": "2021-01-01T00:00:00.000Z",
+                    "personal": true
+                },
+                "isSuperUser": false,
+                "roles": [],
+                "permissions": []
+            }
+        ],
+        "agreements": [
+            {
+                "agreementType": "TERMS_OF_SERVICE",
+                "version": 1,
+                "url": "https://boldsmartlock.com/terms-of-service/",
+                "startDate": "2021-08-12T09:21:18.446Z",
+                "accepted": false
+            }
+        ]
+    }
+}

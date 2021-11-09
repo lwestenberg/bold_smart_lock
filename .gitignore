@@ -130,4 +130,3 @@ dmypy.json
 
 test.py
 .DS_Store
-tests/

@@ -20,11 +20,6 @@ class BoldSmartLock:
         self._session = session
         self._auth = Auth(session)
 
-    async def verify_email(self, email: str):
-        """Request a validation code by e-mail and get a validation_id"""
-
-        return await self._auth.request_validation_id(email)
-
     async def authenticate(
         self,
         email: str,
@@ -38,11 +33,6 @@ class BoldSmartLock:
             email, password, verification_code, validation_id
         )
 
-    def set_token(self, token: str):
-        """Set the token"""
-
-        self._auth.set_token(token)
-
     async def get_device_permissions(self):
         """Get the device data and permissions"""
 
@@ -53,6 +43,11 @@ class BoldSmartLock:
         ) as response:
             response_text = await response.text()
             return response_text
+
+    async def re_login(self):
+        """Re-login / refresh token"""
+
+        return await self._auth.re_login()
 
     async def remote_activation(self, device_id: int):
         """Activate the device remotely"""
@@ -65,7 +60,13 @@ class BoldSmartLock:
             response_text = await response.text()
             return response_text
 
-    async def re_login(self):
-        """Re-login / refresh token"""
+    def set_token(self, token: str):
+        """Set the token"""
 
-        return await self._auth.re_login()
+        self._auth.set_token(token)
+
+    async def verify_email(self, email: str):
+        """Request a validation code by e-mail and get a validation_id"""
+
+        return await self._auth.request_validation_id(email)
+

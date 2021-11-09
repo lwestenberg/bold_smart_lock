@@ -1,0 +1,10 @@
+{
+    "id": "00000000-0000-0000-0000-000000000000",
+    "email": "john.doe@email.com",
+    "expirationTime": "2022-01-01T00:00:00.000Z",
+    "isVerified": false,
+    "numberOfAttempts": 0,
+    "isExpired": false,
+    "moreAttemptsPossible": true,
+    "registrationRequired": false
+}
