@@ -14,9 +14,7 @@ setup(
     name="bold_smart_lock",
     packages=["bold_smart_lock"],
     version=_VERSION,
-    description="A Python library to communicate with Bold"
-    + " Smart Lock (https://boldsmartlock.com)",
-    long_description=readme(),
+    description="A Python library to communicate with Bold Smart Lock (https://boldsmartlock.com)",
     author="Westenberg",
     author_email="lauren@westenberg.dev",
     url="https://github.com/westenberg/bold_smart_lock",
@@ -37,8 +35,7 @@ setup(
     classifiers=[
         "Environment :: Other Environment",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: "
-        + "GNU Lesser General Public License v3 or later (LGPLv3+)",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
