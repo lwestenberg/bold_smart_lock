@@ -2,7 +2,7 @@
 """Python Bold Smart Lock setup script."""
 from setuptools import setup
 
-_VERSION = "0.1.1"
+_VERSION = "0.1.2"
 
 
 def readme():
@@ -24,7 +24,7 @@ setup(
         "aiohttp",
         "asyncio",
         "pytest",
-        "pytest-asyncio==0.18.1",
+        "pytest-aiohttp"
     ],
     test_suite="tests",
     keywords=[
