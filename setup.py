@@ -24,7 +24,7 @@ setup(
         "aiohttp",
         "asyncio",
         "pytest",
-        "pytest-asyncio",
+        "pytest-asyncio==0.18.1",
     ],
     test_suite="tests",
     keywords=[
