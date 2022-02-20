@@ -15,3 +15,7 @@ AUTHENTICATION_REQUEST_JSON = {
     "language": "en",
     "clientLocale": "en-US",
 }
+
+# Response error codes
+INVALID_EMAIL_ERROR = "invalidEmailError"
+INVALID_PHONE_ERROR = "invalidPhoneError"

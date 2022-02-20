@@ -1,0 +1,4 @@
+{
+    "errorMessage": "Invalid email address",
+    "errorCode": "invalidEmailError"
+}

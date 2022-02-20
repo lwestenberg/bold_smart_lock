@@ -24,13 +24,13 @@ class BoldSmartLock:
         self,
         email: str,
         password: str,
-        verification_code: str,
+        validation_code: str,
         validation_id: str = None,
     ):
         """Authenticate with account data, validation id and validation code"""
 
         return await self._auth.authenticate(
-            email, password, verification_code, validation_id
+            email, password, validation_code, validation_id
         )
 
     async def get_device_permissions(self):
@@ -65,8 +65,8 @@ class BoldSmartLock:
 
         self._auth.set_token(token)
 
-    async def verify_email(self, email: str):
-        """Request a validation code by e-mail and get a validation_id"""
+    async def request_validation_id(self, email: str = None, phone: str = None):
+        """Request a validation id and receive a validation code by e-mail or phone"""
 
-        return await self._auth.request_validation_id(email)
+        return await self._auth.request_validation_id(email, phone)
 

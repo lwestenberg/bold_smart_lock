@@ -1,8 +1,11 @@
 # Bold Smart Lock Python Package
-
 This package implements the Bold Smart Lock API to authenticate and unlock a Bold smart lock. Usage of this API requires a Bold Connect.
 
 ## Installation
+To install dependencies during development run `pip3 install .` from the project directory.
+
+## Run tests
+Run `python3 -m pytest --asyncio-mode=auto` from the project directory.
 
 ## Usage
 
