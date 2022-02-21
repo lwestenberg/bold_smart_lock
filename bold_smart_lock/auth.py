@@ -16,6 +16,7 @@ from .const import (
 
 class Auth:
     """Authorization class for Bold Smart Lock"""
+
     def __init__(self, session: aiohttp.ClientSession):
         self._session = session
         self._token = None
@@ -25,7 +26,7 @@ class Auth:
         self, email: str, password: str, verification_code: str, validation_id: str
     ):
         """Authenticate with the login details, validation_id and validation_code"""
-        verified = await self._verify_validation_id(verification_code, validation_id)
+        verified = await self.__verify_validation_id(verification_code, validation_id)
 
         if verified and email and password and self._validation_id:
             request_json = AUTHENTICATION_REQUEST_JSON
@@ -116,7 +117,7 @@ class Auth:
         if self._token:
             return self._token
 
-    async def _verify_validation_id(
+    async def __verify_validation_id(
         self, verification_code: str, validation_id: str = None
     ) -> bool:
         """Verify an e-mail with the validation_id and validation_code"""

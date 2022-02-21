@@ -5,11 +5,13 @@ import aiohttp
 
 from aiohttp.web import HTTPUnauthorized
 from bold_smart_lock.const import API_URI, AUTHENTICATIONS_ENDPOINT, POST_HEADERS
-from bold_smart_lock.exceptions import AuthenticateFailed, InvalidValidationCode, InvalidValidationId, InvalidValidationResponse, MissingValidationId, TokenMissing, VerificationNotFound
+from bold_smart_lock.exceptions import AuthenticateFailed, EmailOrPhoneNotSpecified, InvalidEmail, InvalidPhone, InvalidValidationCode, InvalidValidationId, InvalidValidationResponse, MissingValidationId, TokenMissing, VerificationNotFound
 from bold_smart_lock.auth import Auth
-from tests.helpers import load_fixture, mock_auth_authenticate
+from tests.helpers import load_fixture, mock_auth_authenticate, mock_auth_request_validation_id
 
 fixture_re_login_response = load_fixture("re_login_response.json")
+fixture_request_validation_id_invalid_email = load_fixture("request_validation_id_invalid_email.json")
+fixture_request_validation_id_invalid_phone = load_fixture("request_validation_id_invalid_phone.json")
 
 
 @pytest.mark.asyncio
@@ -23,7 +25,7 @@ async def test_authenticate():
     assert initial_token is None and verification_token != initial_token and auth_response["token"] == verification_token
 
 @pytest.mark.asyncio
-async def test_authenticate():
+async def test_authenticate_invalid():
     """Test if an invalid request returns an AuthenticateFailed error"""
     try:
         await mock_auth_authenticate([None, None], [None, None], [201, None])
@@ -83,7 +85,7 @@ async def test_re_login():
         assert response["token"] == "10000000-0000-0000-0000-001234567890"
 
 @pytest.mark.asyncio
-async def test_re_login():
+async def test_re_login_invalid():
     """Test if a relogin without token returns TokenMissing error"""
     session = aiohttp.ClientSession()
     auth = Auth(session)
@@ -128,4 +130,28 @@ async def test_verify_validation_id_invalid_response():
     try:
         await mock_auth_authenticate([None, None], [202, None])
     except InvalidValidationResponse:
+        assert True
+
+@pytest.mark.asyncio
+async def test_request_validation_id_email_or_phone_not_specified():
+    """Test if the authentication returns an EmailOrPhoneNotSpecified when not passing email and phone"""
+    try:
+        await mock_auth_request_validation_id(400, "email", {"Content-Type": "text/plain"})
+    except EmailOrPhoneNotSpecified:
+        assert True
+
+@pytest.mark.asyncio
+async def test_request_validation_id_phone_not_specified():
+    """Test if the authentication returns an InvalidPhone when not passing a phone number"""
+    try:
+        await mock_auth_request_validation_id(400, "phone", None, fixture_request_validation_id_invalid_phone)
+    except InvalidPhone:
+        assert True
+
+@pytest.mark.asyncio
+async def test_request_validation_id_phone_not_specified():
+    """Test if the authentication returns an InvalidEmail when not passing an email address"""
+    try:
+        await mock_auth_request_validation_id(400, "email", None, fixture_request_validation_id_invalid_email)
+    except InvalidEmail:
         assert True
