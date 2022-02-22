@@ -1,10 +1,6 @@
 """Tests for Bold Smart Lock."""
-import pytest
-import aiohttp
-import json
+from __future__ import annotations
 from aioresponses import aioresponses
-from tests.helpers import load_fixture
-
 from bold_smart_lock.const import (
     API_URI,
     EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT,
@@ -12,12 +8,17 @@ from bold_smart_lock.const import (
     REMOTE_ACTIVATION_ENDPOINT
 )
 from bold_smart_lock.bold_smart_lock import BoldSmartLock
+from tests.helpers import load_fixture
 
-fixture_authenticate_request= load_fixture("authenticate_request.json")
-fixture_authenticate_response = load_fixture("authenticate_response.json")
-fixture_get_device_permissions_response = load_fixture("get_device_permissions_response.json")
-fixture_get_device_permissions_invalid_response = load_fixture("get_device_permissions_invalid_response.json")
-fixture_remote_activation_response = load_fixture("remote_activation_response.json")
+import aiohttp
+import json
+import pytest
+
+fixture_authenticate_request: dict[str, str] = load_fixture("authenticate_request.json")
+fixture_authenticate_response: dict[str, str] = load_fixture("authenticate_response.json")
+fixture_get_device_permissions_response: dict[str, str] = load_fixture("get_device_permissions_response.json")
+fixture_get_device_permissions_invalid_response: dict[str, str] = load_fixture("get_device_permissions_invalid_response.json")
+fixture_remote_activation_response: dict[str, str] = load_fixture("remote_activation_response.json")
 
 
 @pytest.mark.asyncio
@@ -33,7 +34,7 @@ async def test_get_device_permissions():
             payload=fixture_get_device_permissions_response
         )
 
-        get_device_permissions_response = await bold.get_device_permissions()
+        get_device_permissions_response: dict[str, str] = await bold.get_device_permissions()
         assert get_device_permissions_response == fixture_get_device_permissions_response
 
     await session.close()
@@ -73,7 +74,7 @@ async def test_remote_activation():
             payload=fixture_remote_activation_response
         )
 
-        remote_activation_response = await bold.remote_activation(1)
+        remote_activation_response: dict[str, str] = await bold.remote_activation(1)
         assert remote_activation_response == fixture_remote_activation_response
         await session.close()
 

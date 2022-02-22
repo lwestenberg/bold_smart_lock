@@ -1,17 +1,19 @@
 """Tests for Bold Smart Lock."""
-from aioresponses import aioresponses
-import pytest
-import aiohttp
-
+from __future__ import annotations
 from aiohttp.web import HTTPUnauthorized
+from aioresponses import aioresponses
+from bold_smart_lock.auth import Auth
 from bold_smart_lock.const import API_URI, AUTHENTICATIONS_ENDPOINT, POST_HEADERS
 from bold_smart_lock.exceptions import AuthenticateFailed, EmailOrPhoneNotSpecified, InvalidEmail, InvalidPhone, InvalidValidationCode, InvalidValidationId, InvalidValidationResponse, MissingValidationId, TokenMissing, VerificationNotFound
-from bold_smart_lock.auth import Auth
+
 from tests.helpers import load_fixture, mock_auth_authenticate, mock_auth_request_validation_id
 
-fixture_re_login_response = load_fixture("re_login_response.json")
-fixture_request_validation_id_invalid_email = load_fixture("request_validation_id_invalid_email.json")
-fixture_request_validation_id_invalid_phone = load_fixture("request_validation_id_invalid_phone.json")
+import aiohttp
+import pytest
+
+fixture_re_login_response: dict[str, str] = load_fixture("re_login_response.json")
+fixture_request_validation_id_invalid_email: dict[str, str] = load_fixture("request_validation_id_invalid_email.json")
+fixture_request_validation_id_invalid_phone: dict[str, str] = load_fixture("request_validation_id_invalid_phone.json")
 
 
 @pytest.mark.asyncio
@@ -80,7 +82,7 @@ async def test_re_login():
             payload=fixture_re_login_response
         )
 
-        response = await auth.re_login()
+        response: dict[str, str] = await auth.re_login()
         await session.close()
         assert response["token"] == "10000000-0000-0000-0000-001234567890"
 
