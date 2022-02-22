@@ -34,11 +34,13 @@ class BoldSmartLock:
         """Get the device data and permissions"""
         headers = self._auth.headers(True)
 
-        async with self._session.get(
-            API_URI + EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT, headers=headers
-        ) as response:
-            response_text = await response.text()
-            return response_text
+        try:
+            async with self._session.get(
+                API_URI + EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT, headers=headers, raise_for_status=True
+            ) as response:
+                return await response.json()
+        except Exception as exception:
+            raise exception
 
     async def re_login(self):
         """Re-login / refresh token"""
@@ -48,11 +50,14 @@ class BoldSmartLock:
         """Activate the device remotely"""
         headers = self._auth.headers(True)
 
-        async with self._session.post(
-            API_URI + REMOTE_ACTIVATION_ENDPOINT.format(device_id), headers=headers
-        ) as response:
-            response_text = await response.text()
-            return response_text
+        try:
+            async with self._session.post(
+                API_URI + REMOTE_ACTIVATION_ENDPOINT.format(device_id), headers=headers, raise_for_status=True
+            ) as response:
+                response_json = await response.json()
+                return response_json
+        except Exception as exception:
+            raise exception
 
     def set_token(self, token: str):
         """Set the token"""

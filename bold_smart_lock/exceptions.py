@@ -33,12 +33,3 @@ class Forbidden(Exception):
 
 class TokenMissing(Exception):
     """TokenMissing exception for Bold."""
-
-
-# TODO:
-# ongelgide relogin: 400, bad req, errorMessage, errorCode: UUIDMalformed maar bij ongeldige validationId geen code
-# relogin zonder token: 405, not allowed
-
-# device_permissions ongeldig token: 400, errorCode: UUIDMalformed, errorMessage
-
-# token verlopen = 401
