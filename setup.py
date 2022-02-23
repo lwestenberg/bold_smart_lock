@@ -2,7 +2,7 @@
 """Python Bold Smart Lock setup script."""
 from setuptools import setup
 
-_VERSION = "0.2.0"
+_VERSION = "0.2.1"
 
 
 def readme():
@@ -24,8 +24,6 @@ setup(
         "aiohttp",
         "asyncio",
         "aioresponses",
-        "pytest",
-        "pytest-asyncio"
     ],
     test_suite="tests",
     keywords=[
@@ -39,8 +37,7 @@ setup(
         "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Home Automation",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
