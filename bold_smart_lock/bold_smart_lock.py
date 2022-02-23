@@ -36,7 +36,7 @@ class BoldSmartLock:
             async with self._session.get(
                 API_URI + EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT, headers=headers, raise_for_status=True
             ) as response:
-                response_json: dict[str, str] = await response.json()
+                response_json = await response.json()
                 return response_json
         except Exception as exception:
             raise exception
@@ -53,7 +53,7 @@ class BoldSmartLock:
             async with self._session.post(
                 API_URI + REMOTE_ACTIVATION_ENDPOINT.format(device_id), headers=headers, raise_for_status=True
             ) as response:
-                response_json: dict[str, str] = await response.json()
+                response_json = await response.json()
                 return response_json
         except Exception as exception:
             raise exception
