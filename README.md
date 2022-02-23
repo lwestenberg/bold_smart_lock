@@ -7,7 +7,7 @@ This package implements the Bold Smart Lock API to authenticate and unlock a Bol
 To install dependencies during development run `pip install .` from the project directory.
 
 ## Run tests
-
+Run `pip install pytest pytest-asyncio` to install the dependencies for testing.
 Run `python -m pytest --asyncio-mode=auto` from the project directory.
 
 ## Usage
