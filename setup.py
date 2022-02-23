@@ -2,7 +2,7 @@
 """Python Bold Smart Lock setup script."""
 from setuptools import setup
 
-_VERSION = "0.2.2"
+_VERSION = "0.2.3"
 
 
 def readme():

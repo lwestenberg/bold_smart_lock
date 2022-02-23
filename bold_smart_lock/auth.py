@@ -104,7 +104,7 @@ class Auth:
                                 raise InvalidEmail
                             elif response_json["errorCode"] == INVALID_PHONE_ERROR:
                                 raise InvalidPhone
-                        elif response_json.status == 400:
+                        elif response_json["status"] == 400:
                             raise EmailOrPhoneNotSpecified
 
                         if "id" in response_json:
