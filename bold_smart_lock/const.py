@@ -10,12 +10,6 @@ EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT = "effective-device-permissions?size=1000"
 # Default headers
 POST_HEADERS = {"Content-Type": "application/json"}
 
-# Default JSON request data
-AUTHENTICATION_REQUEST_JSON = {
-    "language": "en",
-    "clientLocale": "en-US",
-}
-
-# Response error codes
+# Response body error codes
 INVALID_EMAIL_ERROR = "invalidEmailError"
 INVALID_PHONE_ERROR = "invalidPhoneError"

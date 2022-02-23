@@ -1,8 +1,7 @@
 """Bold Smart Lock authentication."""
-import aiohttp
+from __future__ import annotations
 from aiohttp.web import HTTPUnauthorized
 from bold_smart_lock.exceptions import AuthenticateFailed, EmailOrPhoneNotSpecified, InvalidEmail, InvalidPhone, InvalidValidationCode, InvalidValidationId, InvalidValidationResponse, MissingValidationId, TokenMissing, VerificationNotFound
-
 from .const import (
     API_URI,
     INVALID_EMAIL_ERROR,
@@ -10,8 +9,8 @@ from .const import (
     POST_HEADERS,
     VALIDATIONS_ENDPOINT,
     AUTHENTICATIONS_ENDPOINT,
-    AUTHENTICATION_REQUEST_JSON,
 )
+import aiohttp
 
 
 class Auth:
@@ -19,18 +18,21 @@ class Auth:
 
     def __init__(self, session: aiohttp.ClientSession):
         self._session = session
-        self._token = None
-        self._validation_id = None
+        self._token: str = None
+        self._validation_id: str = None
 
     async def authenticate(
-        self, email: str, password: str, verification_code: str, validation_id: str
+        self, email: str, password: str, verification_code: str, validation_id: str, language: str = "en"
     ):
         """Authenticate with the login details, validation_id and validation_code"""
         verified = await self.__verify_validation_id(verification_code, validation_id)
 
         if verified and email and password and self._validation_id:
-            request_json = AUTHENTICATION_REQUEST_JSON
-            request_json["validationId"] = self._validation_id
+            request_json = {
+                "language": language,
+                "clientLocale": "en-US",
+                "validationId": self._validation_id,
+            }
             headers = self.headers()
 
             try:
@@ -39,13 +41,14 @@ class Auth:
                     headers=headers,
                     auth=aiohttp.BasicAuth(email, password),
                     json=request_json,
+                    raise_for_status=False
                 ) as response:
                     if response.status == 401:
                         raise HTTPUnauthorized
                     elif response.status == 404:
                         raise VerificationNotFound
                     elif response.content_type == "application/json":
-                        response_json = await response.json()
+                        response_json: dict[str, str] = await response.json()
                         if "token" in response_json:
                             self.set_token(response_json["token"])
                             return response_json
@@ -68,8 +71,9 @@ class Auth:
             async with self._session.put(
                 API_URI + AUTHENTICATIONS_ENDPOINT + "/" + self.token(),
                 headers=self.headers(),
+                raise_for_status=False
             ) as response:
-                response_json = await response.json()
+                response_json: dict[str, str] = await response.json()
 
                 if "token" in response_json:
                     self.set_token(response_json["token"])
@@ -87,32 +91,34 @@ class Auth:
 
         if request_json:
             try:
-                response = await self._session.post(
-                    API_URI + VALIDATIONS_ENDPOINT, json=request_json, headers=self.headers()
-                )
+                async with self._session.post(
+                    API_URI + VALIDATIONS_ENDPOINT,
+                    json=request_json,
+                    headers=self.headers(),
+                    raise_for_status=False
+                ) as response:
+                    if response.content_type == "application/json":
+                        response_json: dict[str, str] = await response.json()
+                        if "errorCode" in response_json:
+                            if response_json["errorCode"] == INVALID_EMAIL_ERROR:
+                                raise InvalidEmail
+                            elif response_json["errorCode"] == INVALID_PHONE_ERROR:
+                                raise InvalidPhone
+                        elif response_json.status == 400:
+                            raise EmailOrPhoneNotSpecified
+
+                        if "id" in response_json:
+                            self._validation_id = response_json["id"]
+                            return response_json
             except Exception as exception:
                 raise exception
-            else:
-                if response.content_type == "application/json":
-                    response_json = await response.json()
-                    if "errorCode" in response_json:
-                        if response_json["errorCode"] == INVALID_EMAIL_ERROR:
-                            raise InvalidEmail
-                        elif response_json["errorCode"] == INVALID_PHONE_ERROR:
-                            raise InvalidPhone
-                    elif response_json.status == 400:
-                        raise EmailOrPhoneNotSpecified
-
-                    if "id" in response_json:
-                        self._validation_id = response_json["id"]
-                        return response_json
         raise EmailOrPhoneNotSpecified
 
     def set_token(self, token: str):
         """Update the token"""
         self._token = token
 
-    def token(self) -> str:
+    def token(self):
         """Get the token and update it when needed"""
         if self._token:
             return self._token
@@ -126,23 +132,23 @@ class Auth:
 
         if self._validation_id and verification_code:
             try:
-                response = await self._session.post(
+                async with await self._session.post(
                     API_URI + VALIDATIONS_ENDPOINT + "/" + self._validation_id,
                     json={"code": verification_code},
                     headers=self.headers(),
-                )
+                    raise_for_status=False
+                ) as response:
+                    if response.status == 200:
+                        return True
+                    if response.status == 400:
+                        raise InvalidValidationCode
+                    elif response.status == 404:
+                        raise InvalidValidationId
+                    elif response.status == 405:
+                        raise MissingValidationId
+                    else:
+                        raise InvalidValidationResponse
             except Exception as exception:
                 raise exception
-            else:
-                if response.status == 200:
-                    return True
-                if response.status == 400:
-                    raise InvalidValidationCode
-                elif response.status == 404:
-                    raise InvalidValidationId
-                elif response.status == 405:
-                    raise MissingValidationId
-                else:
-                    raise InvalidValidationResponse
 
         return False
