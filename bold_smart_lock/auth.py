@@ -48,7 +48,7 @@ class Auth:
                     elif response.status == 404:
                         raise VerificationNotFound
                     elif response.content_type == "application/json":
-                        response_json: dict[str, str] = await response.json()
+                        response_json = await response.json()
                         if "token" in response_json:
                             self.set_token(response_json["token"])
                             return response_json
@@ -73,7 +73,7 @@ class Auth:
                 headers=self.headers(),
                 raise_for_status=False
             ) as response:
-                response_json: dict[str, str] = await response.json()
+                response_json = await response.json()
 
                 if "token" in response_json:
                     self.set_token(response_json["token"])
@@ -98,7 +98,7 @@ class Auth:
                     raise_for_status=False
                 ) as response:
                     if response.content_type == "application/json":
-                        response_json: dict[str, str] = await response.json()
+                        response_json = await response.json()
                         if "errorCode" in response_json:
                             if response_json["errorCode"] == INVALID_EMAIL_ERROR:
                                 raise InvalidEmail
