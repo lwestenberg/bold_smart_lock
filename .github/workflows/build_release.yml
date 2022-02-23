@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: 3.9
       - name: Install requirements
-        run: pip install --upgrade . build twine
+        run: pip install --upgrade . build twine pytest pytest-asyncio
       - name: Run unit tests
         run: python -m pytest --asyncio-mode=auto
       - name: Build
