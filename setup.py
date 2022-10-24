@@ -1,20 +1,19 @@
 # coding=utf-8
 """Python Bold Smart Lock setup script."""
 from setuptools import setup
+from pathlib import Path
 
 _VERSION = "0.3.0"
 
-
-def readme():
-    with open("README.md") as desc:
-        return desc.read()
-
+long_description = (Path(__file__).parent / "README.md").read_text()
 
 setup(
     name="bold_smart_lock",
     packages=["bold_smart_lock"],
     version=_VERSION,
     description="A Python library to communicate with Bold Smart Lock (https://boldsmartlock.com)",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="Westenberg",
     author_email="lauren@westenberg.dev",
     url="https://github.com/westenberg/bold_smart_lock",
