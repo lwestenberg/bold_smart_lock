@@ -13,8 +13,8 @@ class Bold:
 
     async def remote_activation(self, device_id: int):
         """Remotely activate a device, using a gateway."""
-        self._auth.post(f"{API_URL}{DEVICE_SERVICE}/device/{device_id}/remote-activation")
+        self._auth.request("POST", f"{API_URL}{DEVICE_SERVICE}/device/{device_id}/remote-activation")
 
     async def get_device_permissions(self):
         """Get all effective device permissions"""
-        self._auth.get(f"{API_URL}{DEVICE_SERVICE}/effective-device-permissions")
+        self._auth.request("GET", f"{API_URL}{DEVICE_SERVICE}/effective-device-permissions")
