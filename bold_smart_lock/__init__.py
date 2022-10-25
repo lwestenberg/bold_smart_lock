@@ -1,1 +1,1 @@
-"""Bold Smart Lock wrapper"""
+"""Bold Smart Lock wrapper."""

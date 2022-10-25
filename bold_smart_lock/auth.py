@@ -8,10 +8,9 @@ from aiohttp import ClientResponse, ClientSession
 class AbstractAuth(ABC):
     """Abstract class to make authenticated requests."""
 
-    def __init__(self, websession: ClientSession, host: str):
+    def __init__(self, websession: ClientSession):
         """Initialize the auth."""
         self.websession = websession
-        self.host = host
 
     @abstractmethod
     async def async_get_access_token(self) -> str:
@@ -30,5 +29,5 @@ class AbstractAuth(ABC):
         headers["authorization"] = f"Bearer {access_token}"
 
         return await self.websession.request(
-            method, f"{self.host}/{url}", **kwargs, headers=headers,
+            method, f"{url}", **kwargs, headers=headers,
         )
