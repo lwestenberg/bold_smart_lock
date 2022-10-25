@@ -1,68 +1,50 @@
-"""Bold Smart Lock API wrapper"""
+"""Library to access the Bold Smart Lock API."""
+
 from __future__ import annotations
-from .auth import Auth
-from .const import (
-    API_URI,
-    REMOTE_ACTIVATION_ENDPOINT,
-    EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT,
-)
-import aiohttp
+
+from .auth import AbstractAuth
+from .const import API_URL, DEVICE_SERVICE, EFFECTIVE_DEVICE_PERMISSIONS_SERVICE
+from .exceptions import ActivationError, DeactivationError, DeviceFirmwareOutdatedError
 
 class BoldSmartLock:
-    """A Python Abstraction object to Bold Smart Lock"""
+    """Class to communicate with the Bold Smart Lock API."""
 
-    def __init__(self, session: aiohttp.ClientSession):
-        """Initialize the Bold Smart Lock object."""
-        self._session = session
-        self._auth = Auth(session)
-
-    async def authenticate(
-        self,
-        email: str,
-        password: str,
-        validation_code: str,
-        validation_id: str = None,
-    ):
-        """Authenticate with account data, validation id and validation code"""
-        return await self._auth.authenticate(
-            email, password, validation_code, validation_id
-        )
+    def __init__(self, auth: AbstractAuth):
+        self._auth = auth
 
     async def get_device_permissions(self):
-        """Get the device data and permissions"""
-        headers = self._auth.headers(True)
-
+        """Get all effective device permissions."""
         try:
-            async with self._session.get(
-                API_URI + EFFECTIVE_DEVICE_PERMISSIONS_ENDPOINT, headers=headers, raise_for_status=True
-            ) as response:
-                response_json = await response.json()
-                return response_json
+            response = await self._auth.request("GET", f"{API_URL}{EFFECTIVE_DEVICE_PERMISSIONS_SERVICE}")
+            response_json = await response.json()
+            return response_json
         except Exception as exception:
             raise exception
-
-    async def re_login(self):
-        """Re-login / refresh token"""
-        return await self._auth.re_login()
 
     async def remote_activation(self, device_id: int):
-        """Activate the device remotely"""
-        headers = self._auth.headers(True)
-
+        """Remotely activate a device, using a gateway."""
         try:
-            async with self._session.post(
-                API_URI + REMOTE_ACTIVATION_ENDPOINT.format(device_id), headers=headers, raise_for_status=True
-            ) as response:
-                response_json = await response.json()
-                return response_json
+            response = await self._auth.request("POST", f"{API_URL}{DEVICE_SERVICE}/{device_id}/remote-activation")
+            response_json = await response.json()
+
+            if response_json["errorCode"] != "OK":
+                raise ActivationError
+
+            return response_json
         except Exception as exception:
             raise exception
 
-    def set_token(self, token: str):
-        """Set the token"""
-        self._auth.set_token(token)
+    async def remote_deactivation(self, device_id: int):
+        """Remotely deactivate a device, using a gateway."""
+        try:
+            response = await self._auth.request("POST", f"{API_URL}{DEVICE_SERVICE}/{device_id}/remote-deactivation")
+            response_json = await response.json()
 
-    async def request_validation_id(self, email: str = None, phone: str = None):
-        """Request a validation id and receive a validation code by e-mail or phone"""
-        return await self._auth.request_validation_id(email, phone)
+            if response_json["errorCode"] == "DeviceFirmwareOutdated":
+                raise DeviceFirmwareOutdatedError
+            elif response_json["errorCode"] != "OK":
+                raise DeactivationError
 
+            return response_json
+        except Exception as exception:
+            raise exception
