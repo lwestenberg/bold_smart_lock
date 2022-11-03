@@ -8,3 +8,6 @@ class DeactivationError(Exception):
 
 class DeviceFirmwareOutdatedError(Exception):
     """DeviceFirmwareOutdated exception for Bold."""
+
+class TooManyRequestsError(Exception):
+    """TooManyRequests exception for Bold."""
