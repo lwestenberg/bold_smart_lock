@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from .auth import AbstractAuth
 from .const import API_URL, DEVICE_SERVICE, EFFECTIVE_DEVICE_PERMISSIONS_SERVICE
-from .exceptions import ActivationError, DeactivationError, DeviceFirmwareOutdatedError
+from .exceptions import ActivationError, DeactivationError, DeviceFirmwareOutdatedError, TooManyRequestsError
 
 class BoldSmartLock:
     """Class to communicate with the Bold Smart Lock API."""
@@ -27,6 +27,8 @@ class BoldSmartLock:
             response = await self._auth.request("POST", f"{API_URL}{DEVICE_SERVICE}/{device_id}/remote-activation")
             response_json = await response.json()
 
+            if response_json["errorCode"] == "TooManyRequests":
+                raise TooManyRequestsError
             if response_json["errorCode"] != "OK":
                 raise ActivationError
 
@@ -40,6 +42,8 @@ class BoldSmartLock:
             response = await self._auth.request("POST", f"{API_URL}{DEVICE_SERVICE}/{device_id}/remote-deactivation")
             response_json = await response.json()
 
+            if response_json["errorCode"] == "TooManyRequests":
+                raise TooManyRequestsError
             if response_json["errorCode"] == "DeviceFirmwareOutdated":
                 raise DeviceFirmwareOutdatedError
             elif response_json["errorCode"] != "OK":
