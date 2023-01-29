@@ -6,8 +6,17 @@ class ActivationError(Exception):
 class DeactivationError(Exception):
     """DeactivationError exception for Bold."""
 
+class GateWayCurrentSatatusError(Exception):
+    """GateWayCurrentSatatusError exception for Bold."""
+
 class DeviceFirmwareOutdatedError(Exception):
-    """DeviceFirmwareOutdated exception for Bold."""
+    """DeviceFirmwareOutdatedError exception for Bold."""
 
 class TooManyRequestsError(Exception):
-    """TooManyRequests exception for Bold."""
+    """TooManyRequestsError exception for Bold."""
+
+class GatewayUnreachableError(Exception):
+    """GatewayUnreachableError exception for Bold."""
+
+class GatewayNotFoundError(Exception):
+    """GatewayNotFoundError exception for Bold."""
