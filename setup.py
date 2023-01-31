@@ -3,7 +3,7 @@
 from pathlib import Path
 from setuptools import setup
 
-_VERSION = "0.3.8"
+_VERSION = "0.3.9"
 
 long_description = (Path(__file__).parent / "README.md").read_text()
 
